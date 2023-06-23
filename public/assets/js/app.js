@@ -24,11 +24,11 @@ class App {
 		const layoutPath = `/html/layout/${route.layout}.js`;
 		const templatePath = `/html/templates/${route.template}.js`;
 		const rootElement = document.querySelector("#root");
-		this.appendLoader(rootElement, route.loader);
+		//this.appendLoader(rootElement, route.loader);
 		import(layoutPath).then(obj => {
 			let element = obj[route.layout];
 			import(templatePath).then(comp => {
-				this.removeLoader();
+				//this.removeLoader();
 				const compHtml = comp[route.template];
 				element = element.replace(`<outlet>`, compHtml);
 				this.parseElement(element, rootElement);
