@@ -1,5 +1,5 @@
-import { router } from "./router.js";
-import { loader } from "./loader.js";
+import { router } from "../../html/router.js";
+import { loader } from "../../html/loader.js";
 
 class App {
 

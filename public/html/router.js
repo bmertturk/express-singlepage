@@ -4,20 +4,20 @@ export const router = [
 		layout: "content",
 		template: "dashboard",
 		loaderLayout: "content",
-		loaderTemplate: "content"
+		loaderTemplate: "template"
 	},
 	{
 		route: "/users",
 		layout: "content",
 		template: "user",
 		loaderLayout: "content",
-		loaderTemplate: "content"
+		loaderTemplate: "template"
 	},
 	{
 		route: "/login",
 		layout: "nocontent",
 		template: "login",
-		loaderLayout: "login",
-		loaderTemplate: "content"
+		loaderLayout: "nocontent",
+		loaderTemplate: "login"
 	}
 ];

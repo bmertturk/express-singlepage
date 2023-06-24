@@ -6648,6 +6648,38 @@ textarea,
     display: none !important;
   }
 }
+.header-loader {
+  background-color: #dddddd;
+  margin-bottom: 2rem;
+}
+.header-loader .logo-loader {
+  width: 100px;
+  height: 68.5px;
+  background-color: #cccccc;
+}
+.header-loader .ul-loader {
+  width: 200px;
+  height: 68.5px;
+  background-color: #fefefe;
+}
+
+.sidebar-loader {
+  background-color: #dddddd;
+  height: 200px;
+}
+
+.login-loader {
+  width: 400px;
+  height: 500px;
+  background-color: #dddddd;
+}
+
+.content-loader {
+  width: 100%;
+  height: 300px;
+  background-color: #cccccc;
+}
+
 header {
   background-color: var(--primary);
   margin-bottom: 2rem;
