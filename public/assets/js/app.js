@@ -27,10 +27,7 @@ class App {
 		const templatePath = `/html/templates/${route.template}.js`;
 		const rootElement = document.querySelector("#root");
 		if(route.layout !== this.lastLayout) {
-			console.log("not same");
 			this.appendLoader(rootElement, route.loader);
-		} else {
-			console.log("same");
 		}
 		import(layoutPath).then(obj => {
 			let element = obj[route.layout];
