@@ -1,4 +1,4 @@
-export const loader = [
+export const loaderLayout = [
 	{
 		type: "content",
 		html: `<h1>content loader</h1>`

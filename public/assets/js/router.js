@@ -3,18 +3,21 @@ export const router = [
 		route: "/",
 		layout: "content",
 		template: "dashboard",
-		loader: "content"
+		loaderLayout: "content",
+		loaderTemplate: "content"
 	},
 	{
 		route: "/users",
 		layout: "content",
 		template: "user",
-		loader: "content"
+		loaderLayout: "content",
+		loaderTemplate: "content"
 	},
 	{
 		route: "/login",
 		layout: "nocontent",
 		template: "login",
-		loader: "login"
+		loaderLayout: "login",
+		loaderTemplate: "content"
 	}
 ];
