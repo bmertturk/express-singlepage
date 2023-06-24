@@ -1,5 +1,5 @@
 import { router } from "./router.js";
-import { loaderLayout } from "./loader-layout.js";
+import { loader } from "./loader.js";
 
 class App {
 
@@ -59,7 +59,7 @@ class App {
 	}
 
 	appendLoader(element, routeLoader) {
-		const loaderHTML = loaderLayout.find(ld => ld.type === routeLoader).html;
+		const loaderHTML = loader.find(ld => ld.type === routeLoader).html;
 		this.parseElement(loaderHTML, element);
 	}
 
@@ -68,7 +68,7 @@ class App {
 	}
 	
 	loaderWrapper(element, routeLoader) {
-		const loaderHTML = loaderLayout.find(ld => ld.type === routeLoader).html;
+		const loaderHTML = loader.find(ld => ld.type === routeLoader).html;
 		const loaderWrapperHTML = `<div class="bm-loader">${loaderHTML}</div>`;
 		return element.replace(`<outlet>`, loaderWrapperHTML);
 	}

@@ -3,7 +3,7 @@ export const header = `
 <div class="container">
 	<nav>
 		<ul>
-			<li><strong>Dede</strong></li>
+			<li><strong>Logo</strong></li>
 		</ul>
 		<ul>
 			<li><a role="button" href="/">Dashboard</a></li>
