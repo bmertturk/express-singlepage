@@ -5,10 +5,11 @@ class App {
 
 	constructor() {}
 
-	
+	lastLayout = "";
 
 	init() {
 		this.checkRoutes();
+		this.listener();
 	}
 
 	checkRoutes() {
@@ -16,6 +17,7 @@ class App {
 		router.find(route => {
 			if(route.route === pathName) {
 				this.buildLayout(route);
+				this.lastLayout = route.layout;
 			}
 		});
 	}
@@ -24,11 +26,18 @@ class App {
 		const layoutPath = `/html/layout/${route.layout}.js`;
 		const templatePath = `/html/templates/${route.template}.js`;
 		const rootElement = document.querySelector("#root");
-		//this.appendLoader(rootElement, route.loader);
+		if(route.layout !== this.lastLayout) {
+			console.log("not same");
+			this.appendLoader(rootElement, route.loader);
+		} else {
+			console.log("same");
+		}
 		import(layoutPath).then(obj => {
 			let element = obj[route.layout];
+			if(route.layout !== this.lastLayout) {
+				this.removeLoader(rootElement);
+			}
 			import(templatePath).then(comp => {
-				//this.removeLoader();
 				const compHtml = comp[route.template];
 				element = element.replace(`<outlet>`, compHtml);
 				this.parseElement(element, rootElement);
@@ -37,6 +46,7 @@ class App {
 	}
 
 	parseElement(element, targetElement) {
+		targetElement.innerHTML = "";
 		const parser = new DOMParser();
 		const htmlData = parser.parseFromString(element, "text/html");
 		htmlData.querySelectorAll("body > *").forEach(element => {
@@ -53,6 +63,24 @@ class App {
 	removeLoader() {
 		const rootElement = document.querySelector("#root");
 		rootElement.innerHTML = "";
+	}
+
+	handleLink(e) {
+		const anchor = e.target.closest('a');
+		if (anchor !== null) {
+			history.pushState({}, anchor.href, anchor.href);
+			this.checkRoutes();
+		}
+	}
+
+	listener() {
+		document.addEventListener('click', e => {
+			e.preventDefault();
+			this.handleLink(e);
+		});
+		window.onpopstate = (e) => {
+			this.checkRoutes();
+		}
 	}
 
 }
