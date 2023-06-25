@@ -30,17 +30,19 @@ class App {
 			this.appendLoader(rootElement, route.loaderLayout);
 		}
 		import(layoutPath).then(obj => {
-			let element = obj[route.layout];
+			let element = obj[route.layout].html();
 			if(route.layout !== this.lastLayout) {
 				this.removeLoader(rootElement);
 			}
 			element = this.loaderWrapper(element, route.loaderTemplate);
 			this.parseElement(element, rootElement);
+			obj[route.layout].init();
 			import(templatePath).then(comp => {
-				const compHtml = comp[route.template];
+				const compHtml = comp[route.template].html();
 				element = this.removeLoaderWrapper(element);
 				element = element.replace(`<outlet>`, compHtml);
 				this.parseElement(element, rootElement);
+				comp[route.template].init();
 			});
 		});
 	}
