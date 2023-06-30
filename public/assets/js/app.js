@@ -22,7 +22,7 @@ class App {
 		});
 	}
 
-	buildLayout(route) {
+	async buildLayout(route) {
 		const layoutPath = `/html/layout/${route.layout}.js`;
 		const templatePath = `/html/templates/${route.template}.js`;
 		const rootElement = document.querySelector("#root");
@@ -30,20 +30,24 @@ class App {
 			this.appendLoader(rootElement, route.loaderLayout);
 		}
 		import(layoutPath).then(obj => {
-			let element = obj[route.layout].html();
 			if(route.layout !== this.lastLayout) {
 				this.removeLoader(rootElement);
 			}
-			element = this.loaderWrapper(element, route.loaderTemplate);
-			this.parseElement(element, rootElement);
-			obj[route.layout].init();
-			import(templatePath).then(comp => {
-				const compHtml = comp[route.template].html();
-				element = this.removeLoaderWrapper(element);
-				element = element.replace(`<outlet>`, compHtml);
+			obj[route.layout].init(_ => {
+				console.log("sadsa");
+				let element = obj[route.layout].html();
+				element = this.loaderWrapper(element, route.loaderTemplate);
 				this.parseElement(element, rootElement);
-				comp[route.template].init();
+				import(templatePath).then(comp => {
+					comp[route.template].init(_ => {
+						const compHtml = comp[route.template].html();
+						element = this.removeLoaderWrapper(element);
+						element = element.replace(`<outlet>`, compHtml);
+						this.parseElement(element, rootElement);
+					});
+				});
 			});
+			
 		});
 	}
 

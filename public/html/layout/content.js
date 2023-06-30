@@ -2,8 +2,8 @@ import { header } from "../snippets/header.js";
 import { sidebar } from "../snippets/sidebar.js";
 
 export const content = {
-	init() {
-
+	init(callback) {
+		callback();
 	},
 
 	html() {
