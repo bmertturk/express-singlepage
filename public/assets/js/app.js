@@ -34,7 +34,6 @@ class App {
 				this.removeLoader(rootElement);
 			}
 			obj[route.layout].init(_ => {
-				console.log("sadsa");
 				let element = obj[route.layout].html();
 				element = this.loaderWrapper(element, route.loaderTemplate);
 				this.parseElement(element, rootElement);

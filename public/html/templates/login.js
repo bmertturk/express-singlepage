@@ -1,7 +1,7 @@
 export const login = {
 
-	init() {
-
+	async init(callback) {
+		callback();
 	},
 
 	html() {

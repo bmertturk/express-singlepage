@@ -1,11 +1,15 @@
 export const dashboard = {
 
-	control: "",
+	posts: [],
 
 	html() {
 		return `
 		<article class="m-0">
-			<div id="dashboard">${this.control}</div>
+			<div id="dashboard">
+				${this.posts.map(post => {
+					return `<div>${post.title}</div>`
+				}).join("")}
+			</div>
 		</article>
 		`
 	},
@@ -17,12 +21,11 @@ export const dashboard = {
 
 	async fetchData() {
 
-		const url = 'https://jsonplaceholder.typicode.com/todos/1';
-		
+		const url = 'https://jsonplaceholder.typicode.com/posts/';
 		try {
 			const response = await fetch(url);
 			const result = await response.json();
-			this.control = result.title;
+			this.posts = result;
 		} catch (error) {
 			console.error(error);
 		}
