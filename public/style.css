@@ -30,26 +30,6 @@
   --transition: 0.2s ease-in-out;
   --modal-overlay-backdrop-filter: blur(0.25rem);
 }
-@media (min-width: 576px) {
-  :root {
-    --font-size: 17px;
-  }
-}
-@media (min-width: 768px) {
-  :root {
-    --font-size: 18px;
-  }
-}
-@media (min-width: 992px) {
-  :root {
-    --font-size: 19px;
-  }
-}
-@media (min-width: 1200px) {
-  :root {
-    --font-size: 20px;
-  }
-}
 
 @media (min-width: 576px) {
   body > header,
@@ -6649,37 +6629,93 @@ textarea,
   }
 }
 .header-loader {
-  background-color: #dddddd;
+  height: 58px;
   margin-bottom: 2rem;
+  position: relative;
+  background-color: #dddddd;
 }
-.header-loader .logo-loader {
-  width: 100px;
-  height: 68.5px;
-  background-color: #cccccc;
-}
-.header-loader .ul-loader {
-  width: 200px;
-  height: 68.5px;
-  background-color: #fefefe;
+.header-loader:before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: rotate 1.2s linear infinite;
 }
 
 .sidebar-loader {
-  background-color: #dddddd;
   height: 200px;
+  position: relative;
+  background-color: #dddddd;
+}
+.sidebar-loader:before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: rotate 1.2s linear infinite;
 }
 
 .login-loader {
   width: 400px;
   height: 500px;
+  margin: 0 auto;
+  position: relative;
   background-color: #dddddd;
+}
+.login-loader:before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: rotate 1.2s linear infinite;
 }
 
 .content-loader {
   width: 100%;
   height: 300px;
-  background-color: #cccccc;
+  position: relative;
+  background-color: #dddddd;
+}
+.content-loader:before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: rotate 1.2s linear infinite;
 }
 
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 header {
   background-color: var(--primary);
   margin-bottom: 2rem;
