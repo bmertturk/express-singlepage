@@ -2,9 +2,8 @@ export const user = {
 
 	users: [],
 
-	async init(callback){
+	async init(){
 		await this.fetchData();
-		callback();
 	},
 
 	async fetchData() {

@@ -1,8 +1,6 @@
 export const login = {
 
-	async init(callback) {
-		callback();
-	},
+	async init() {},
 
 	html() {
 		return `

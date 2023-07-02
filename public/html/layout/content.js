@@ -2,9 +2,7 @@ import { header } from "../snippets/header.js";
 import { sidebar } from "../snippets/sidebar.js";
 
 export const content = {
-	async init(callback) {
-		callback();
-	},
+	async init() {},
 
 	html() {
 		return `

@@ -1,9 +1,7 @@
 import { header } from "../snippets/header.js";
 
 export const nocontent = {
-	async init(callback) {
-		callback();
-	},
+	async init() {},
 
 	html() {
 		return `

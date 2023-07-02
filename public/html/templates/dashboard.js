@@ -14,9 +14,8 @@ export const dashboard = {
 		`
 	},
 
-	async init(callback) {
+	async init() {
 		await this.fetchData();
-		callback();
 	},
 
 	async fetchData() {

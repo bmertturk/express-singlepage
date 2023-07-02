@@ -1,16 +1,14 @@
 import { router } from "../../html/router.js";
 import { loader } from "../../html/loader.js";
 
-class App {
+const app = {
 
-	constructor() {}
-
-	lastLayout = "";
+	lastLayout: "",
 
 	init() {
 		this.checkRoutes();
 		this.listener();
-	}
+	},
 
 	checkRoutes() {
 		const pathName = window.location.pathname;
@@ -20,7 +18,7 @@ class App {
 				this.lastLayout = route.layout;
 			}
 		});
-	}
+	},
 
 	async buildLayout(route) {
 		const layoutPath = `/html/layout/${route.layout}.js`;
@@ -33,27 +31,26 @@ class App {
 			if(route.layout !== this.lastLayout) {
 				this.removeLoader(rootElement);
 			}
-			obj[route.layout].init(_ => {
+			obj[route.layout].init().then(_ => {
 				let element = obj[route.layout].html();
 				element = this.loaderWrapper(element, route.loaderTemplate);
 				this.parseElement(element, rootElement);
 				import(templatePath).then(comp => {
-					comp[route.template].init(_ => {
+					comp[route.template].init().then(_ => {
 						const compHtml = comp[route.template].html();
 						element = this.removeLoaderWrapper(element);
 						element = element.replace(`<outlet>`, compHtml);
 						this.parseElement(element, rootElement);
 					});
 				});
-			});
-			
+			});			
 		});
-	}
+	},
 
 	elementDom(element) {
 		const parser = new DOMParser();
 		return parser.parseFromString(element, "text/html");
-	}
+	},
 
 	parseElement(element, targetElement) {
 		targetElement.innerHTML = "";
@@ -61,22 +58,22 @@ class App {
 		htmlData.querySelectorAll("body > *").forEach(element => {
 			targetElement.appendChild(element);
 		});
-	}
+	},
 
 	appendLoader(element, routeLoader) {
 		const loaderHTML = loader.find(ld => ld.type === routeLoader).html;
 		this.parseElement(loaderHTML, element);
-	}
+	},
 
 	removeLoader(element) {
 		element.innerHTML = "";
-	}
+	},
 	
 	loaderWrapper(element, routeLoader) {
 		const loaderHTML = loader.find(ld => ld.type === routeLoader).html;
 		const loaderWrapperHTML = `<div class="bm-loader">${loaderHTML}</div>`;
 		return element.replace(`<outlet>`, loaderWrapperHTML);
-	}
+	},
 
 	removeLoaderWrapper(element) {
 		const htmlData = this.elementDom(element);
@@ -87,7 +84,7 @@ class App {
 			newElement += element.outerHTML;
 		});
 		return newElement.replace(`<div class="bm-loader"></div>`, "<outlet>");
-	}
+	},
 
 	handleLink(e) {
 		const anchor = e.target.closest('a');
@@ -95,7 +92,7 @@ class App {
 			history.pushState({}, anchor.href, anchor.href);
 			this.checkRoutes();
 		}
-	}
+	},
 
 	listener() {
 		document.addEventListener('click', e => {
@@ -108,7 +105,5 @@ class App {
 	}
 
 }
-
-const app = new App();
 
 app.init();
