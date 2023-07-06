@@ -1,9 +1,12 @@
 import { router } from "../../html/router.js";
 import { loader } from "../../html/loader.js";
+import { sidebar } from "../../html/loaders/sidebar.js";
 
-const app = {
+export const app = {
 
-	lastLayout: "",
+	lastRoute: [],
+	lastObj: "",
+	rootElement: document.querySelector("#root"),
 
 	init() {
 		this.checkRoutes();
@@ -15,7 +18,7 @@ const app = {
 		router.find(route => {
 			if(route.route === pathName) {
 				this.buildLayout(route);
-				this.lastLayout = route.layout;
+				this.lastRoute = route;
 			}
 		});
 	},
@@ -23,40 +26,57 @@ const app = {
 	async buildLayout(route) {
 		const layoutPath = `/html/layout/${route.layout}.js`;
 		const templatePath = `/html/templates/${route.template}.js`;
-		const rootElement = document.querySelector("#root");
-		if(route.layout !== this.lastLayout) {
-			this.appendLoader(rootElement, route.loaderLayout);
+		;
+		if(route.layout !== this.lastRoute.layout) {
+			this.appendLoader(this.rootElement, route.loaderLayout);
 		}
 		import(layoutPath).then(obj => {
-			if(route.layout !== this.lastLayout) {
-				this.removeLoader(rootElement);
+			if(route.layout !== this.lastRoute.layout) {
+				this.removeLoader(this.rootElement);
 			}
 			obj[route.layout].init().then(_ => {
 				let element = obj[route.layout].html();
 				element = this.loaderWrapper(element, route.loaderTemplate);
-				this.parseElement(element, rootElement);
+				let parsedElement = this.parseElement(element);
+				this.renderElement(parsedElement, this.rootElement);
 				import(templatePath).then(comp => {
 					comp[route.template].init().then(_ => {
-						const compHtml = comp[route.template].html();
+						this.lastObj = comp[route.template].html();
 						element = this.removeLoaderWrapper(element);
-						element = element.replace(`<outlet>`, compHtml);
-						this.parseElement(element, rootElement);
+						element = element.replace(`<outlet>`, this.lastObj);
+						const parsedElement = this.initialRender(element);
+						this.renderElement(parsedElement, this.rootElement);
+						if(comp[route.template].afterInit) comp[route.template].afterInit();
 					});
 				});
-			});			
-		});
+				if(obj[route.layout].afterInit) obj[route.layout].afterInit();
+			});
+		})
 	},
 
-	elementDom(element) {
+	parseElement(element) {
 		const parser = new DOMParser();
 		return parser.parseFromString(element, "text/html");
 	},
-
-	parseElement(element, targetElement) {
+	
+	renderElement(htmlData, targetElement) {
 		targetElement.innerHTML = "";
-		const htmlData = this.elementDom(element);
 		htmlData.querySelectorAll("body > *").forEach(element => {
 			targetElement.appendChild(element);
+		});
+	},
+
+	initialRender(element) {
+		const parsedElement = this.parseElement(element);
+		parsedElement.querySelectorAll("[bind]").forEach(element => {
+			element.innerHTML = "dsdsadsa";
+		});
+		return parsedElement;
+	},
+
+	render(bind, value) {
+		document.querySelectorAll(`[bind="${bind}"]`).forEach(element => {
+			element.innerHTML = value();
 		});
 	},
 
@@ -76,7 +96,7 @@ const app = {
 	},
 
 	removeLoaderWrapper(element) {
-		const htmlData = this.elementDom(element);
+		const htmlData = this.parseElement(element);
 		let loader = htmlData.querySelector(".bm-loader");
 		loader = loader.innerHTML = "";
 		let newElement = "";
