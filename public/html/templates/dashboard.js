@@ -5,6 +5,8 @@ export const dashboard = {
 
 	posts: [],
 	mahmut: 1,
+	ali: "dsadhsjahkj",
+	postobj: {},
 
 	html() {
 		return `
@@ -12,6 +14,9 @@ export const dashboard = {
 			<div id="dashboard">
 			<button>Change</button>
 				<h1 bind="mahmut"></h1>
+				<h2 bind="ali"></h2>
+				<p bind="posts"></p>
+				<pre bind="postobj"></pre>
 				${this.posts.map(post => {
 			return `<div>${post.title}</div>`
 		}).join("")}

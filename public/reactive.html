@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Unreact - Reactivity in VanillaJS</title>
+</head>
+<body>
+	<p>This is a reactive item: <span reactive='text' /></p>
+	<p>Ant this too: <span reactive='mahmut' /></p>
+	<input type="text" placeholder="Type something!" oninput="render('text', this.value)" />
+	<input type="text" placeholder="Type something!" oninput="render('mahmut', this.value)" />
+	<script defer>
+		document.querySelectorAll('[reactive]').forEach(el => {
+			const key = el.attributes['reactive'].value;
+			let elementValue = window[key];
+			if (!elementValue) elementValue = { elements: [], proxy: null };
+			elementValue.elements.push(el);
+			elementValue.proxy = new Proxy({value: el.innerText}, {
+				set(obj, prop, value) {
+					elementValue.elements.forEach(el => el.innerHTML = value);
+					return true;
+				}
+			});
+		});
+		window.render = (key, value) => elementValue.proxy.value = value;
+	</script>
+</body>
+
+</html>

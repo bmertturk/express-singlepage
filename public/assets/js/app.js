@@ -44,7 +44,7 @@ export const app = {
 						this.lastObj = comp[route.template].html();
 						element = this.removeLoaderWrapper(element);
 						element = element.replace(`<outlet>`, this.lastObj);
-						const parsedElement = this.initialRender(element);
+						const parsedElement = this.initialRender(element, comp[route.template]);
 						this.renderElement(parsedElement, this.rootElement);
 						if(comp[route.template].afterInit) comp[route.template].afterInit();
 					});
@@ -66,10 +66,21 @@ export const app = {
 		});
 	},
 
-	initialRender(element) {
+	initialRender(element, template) {
 		const parsedElement = this.parseElement(element);
 		parsedElement.querySelectorAll("[bind]").forEach(element => {
-			element.innerHTML = "dsdsadsa";
+			const bindedValue = element.getAttribute("bind");
+			const method = template[bindedValue];
+			if(Array.isArray(method)) {
+				console.log(bindedValue + " is Array");
+			}
+			if(typeof method === "string" || typeof method === "number") {
+				console.log(bindedValue + " is string or number");
+			}
+			if(typeof method === "object" && !Array.isArray(method)) {
+				console.log(bindedValue + " is object");
+			}
+			element.innerHTML = method;
 		});
 		return parsedElement;
 	},
